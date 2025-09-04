@@ -21,7 +21,7 @@
 | 08.28 | Compile, interpreter, IPC | 박종현 | [박종현](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/Compile%2C%20interpreter%2C%20IPC/compiling_%EB%B0%95%EC%A2%85%ED%98%84.pdf) |
 | 08.28 | thread safe, thread pool, cache | 강병호 | [강병호](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/Thread%20safe%2C%20Thread%20pool%2C%20Cache/Cache_%E1%84%80%E1%85%A1%E1%86%BC%E1%84%87%E1%85%A7%E1%86%BC%E1%84%92%E1%85%A9.pdf) 
 | 08.28 | thread safe, thread pool, cache | 허진혁 | [허진혁](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/Thread%20safe%2C%20Thread%20pool%2C%20Cache/SSAFY_CS_STUDY_%ED%97%88%EC%A7%84%ED%98%81_%EB%A9%80%ED%8B%B0%EC%8A%A4%EB%A0%88%EB%93%9C.pdf) |
-| 09.04 | Thrashing | 서민재 | |
+| 09.04 | Thrashing | 서민재 | [서민재](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/72311de7b0f8344825bcf7da4fdbad2a70dadf2e/Thrashing/Thrashing_%EC%84%9C%EB%AF%BC%EC%9E%AC.pdf) |
 | 09.04 | virtual memory, segmentation & paging, TLB | 김주혜 | |
 | 09.04 | virtual memory, segmentation & paging, TLB | 윤건희 | |
 | 09.04 | JVM | 송현우 | [송현우](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/JVM/HotSpotVM_%EC%86%A1%ED%98%84%EC%9A%B0.pdf) |
