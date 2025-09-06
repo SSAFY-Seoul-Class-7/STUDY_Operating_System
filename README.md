@@ -22,7 +22,7 @@
 | 08.28 | thread safe, thread pool, cache | 강병호 | [강병호](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/Thread%20safe%2C%20Thread%20pool%2C%20Cache/Cache_%E1%84%80%E1%85%A1%E1%86%BC%E1%84%87%E1%85%A7%E1%86%BC%E1%84%92%E1%85%A9.pdf) 
 | 08.28 | thread safe, thread pool, cache | 허진혁 | [허진혁](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/Thread%20safe%2C%20Thread%20pool%2C%20Cache/SSAFY_CS_STUDY_%ED%97%88%EC%A7%84%ED%98%81_%EB%A9%80%ED%8B%B0%EC%8A%A4%EB%A0%88%EB%93%9C.pdf) |
 | 09.04 | Thrashing | 서민재 | [서민재](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/b11d5342a95f7ee3d1893222fd206a88d06fb11f/Thrashing/Thrashing_%EC%84%9C%EB%AF%BC%EC%9E%AC.pdf) |
-| 09.04 | virtual memory, segmentation & paging, TLB | 김주혜 | |
+| 09.04 | virtual memory, segmentation & paging, TLB | 김주혜 | [김주혜](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/Virtual%20memory%2C%20segmentation%2C%20paging%2C%20TLB/Segentation%2C%20Paging_%EA%B9%80%EC%A3%BC%ED%98%9C.pdf)|
 | 09.04 | virtual memory, segmentation & paging, TLB | 윤건희 | |
 | 09.04 | JVM | 송현우 | [송현우](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/JVM/HotSpotVM_%EC%86%A1%ED%98%84%EC%9A%B0.pdf) |
 | 09.11 | Synchronization, page replacement, file system, sync & async, blocking & non-blocking |  | |
