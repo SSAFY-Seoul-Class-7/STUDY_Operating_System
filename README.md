@@ -26,7 +26,7 @@
 | 09.04 | Virtual memory, Segmentation & Paging | 윤건희 | |
 | 09.04 | JVM | 송현우 | [송현우](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/JVM/HotSpotVM_%EC%86%A1%ED%98%84%EC%9A%B0.pdf) |
 | 09.11 | TLB, Synchronization, Page replacement | 문승은 | |
-| 09.11 | TLB, Synchronization, Page replacement | 한시현 | [한시현 STUDY_Operating_System
+| 09.11 | TLB, Synchronization, Page replacement | 한시현 | [한시현](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/TLB%2C%20Synchronization%2C%20Page%20replacement/Page_Replacement_%ED%95%9C%EC%8B%9C%ED%98%84.pdf) |
 [운영체제 기술면접 질문리스트](https://github.com/VSFe/Tech-Interview/blob/main/02-OPERATING_SYSTEM.md)를 읽고 질문에 대한 답변을 정리하는 스터디
 
 ### 📚 Computer Science Study <br>
@@ -54,6 +54,6 @@
 | 09.04 | Virtual memory, Segmentation & Paging | 윤건희 | |
 | 09.04 | JVM | 송현우 | [송현우](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/JVM/HotSpotVM_%EC%86%A1%ED%98%84%EC%9A%B0.pdf) |
 | 09.11 | TLB, Synchronization, Page replacement | 문승은 | |
-| 09.11 | TLB, Synchronization, Page replacement | 한시현 | [한시현](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/TLB%2C%20Synchronization%2C%20Page%20replacement/Page_Replacement_%ED%95%9C%EC%8B%9C%ED%98%84.pdf)) |
+| 09.11 | TLB, Synchronization, Page replacement | 한시현 | [한시현](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/TLB%2C%20Synchronization%2C%20Page%20replacement/Page_Replacement_%ED%95%9C%EC%8B%9C%ED%98%84.pdf) |
 | 09.11 | File system, Sync & Async, Blocking & Non-blocking | 정승호 | [정승호](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/File%20system%2C%20Sync%20%26%20Async%2C%20Blocking%20%26%20Non-blocking/%EC%A0%95%EC%8A%B9%ED%98%B8.pdf) |
 | 09.11 | File system, Sync & Async, Blocking & Non-blocking | 정정교 | [정정교](https://github.com/SSAFY-Seoul-Class-7/STUDY_Operating_System/blob/main/File%20system%2C%20Sync%20%26%20Async%2C%20Blocking%20%26%20Non-blocking/%EC%A0%95%EC%A0%95%EA%B5%90.pptx) |
