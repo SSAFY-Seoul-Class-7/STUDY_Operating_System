@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock-Cache 시뮬레이터</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #334155;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+        }
+        .cache-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+            align-items: flex-end;
+            min-height: 120px;
+            position: relative;
+        }
+        .cache-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 7rem;
+            height: 7rem;
+            background-color: #e2e8f0;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.3s ease-in-out;
+            border: 2px solid transparent;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .cache-item.added {
+            animation: fadeIn 0.5s ease-out;
+            background-color: #6ee7b7; /* green-300 */
+            border-color: #10b981; /* green-500 */
+        }
+        .cache-item.hit {
+            animation: pulse 1s infinite;
+            background-color: #93c5fd; /* blue-300 */
+            border-color: #3b82f6; /* blue-500 */
+        }
+        .cache-item.evicted {
+            animation: fadeOut 0.5s ease-in;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        .ref-bit {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: normal;
+            color: #4a5568;
+            background-color: #cbd5e1;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .clock-hand {
+            position: absolute;
+            top: -2.5rem;
+            font-size: 2.5rem;
+            color: #ef4444; /* red-500 */
+            transition: left 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.8); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.8); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .status-message {
+            text-align: center;
+            font-size: 1.25rem;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+        .status-miss {
+            color: #ef4444; /* red-500 */
+        }
+        .status-hit {
+            color: #22c55e; /* green-500 */
+        }
+        .info-panel {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container bg-white p-8 rounded-xl shadow-lg">
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Clock-Cache 시뮬레이터</h1>
+        
+        <div class="flex flex-col items-center gap-4">
+            <div class="flex items-center gap-4 w-full">
+                <input id="keyInput" type="number" placeholder="캐시 키 입력 (숫자)" class="flex-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">
+                <button id="putButton" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-md shadow-md hover:bg-blue-700 transition-all duration-300">
+                    PUT
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-4 mt-2 w-full">
+                <span class="text-gray-600 font-medium">캐시 용량:</span>
+                <input id="capacityInput" type="number" value="3" min="1" max="10" class="w-20 p-2 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">
+            </div>
+        </div>
+        
+        <div id="cacheContainer" class="cache-container">
+            <!-- Clock hand will be rendered here -->
+            <div id="clockHand" class="clock-hand">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10">
+                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.535a.75.75 0 0 0 1.5 0V9.06l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <!-- Cache items will be rendered here -->
+        </div>
+
+        <div id="status" class="status-message mt-8"></div>
+        
+        <div class="info-panel mt-8">
+            <h2 class="text-xl font-bold text-gray-700 mb-2">시뮬레이션 가이드</h2>
+            <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                <li>캐시 용량을 설정하고 `PUT` 버튼을 눌러 키를 추가하세요.</li>
+                <li>이미 존재하는 키를 추가하면 캐시 히트가 발생하고, 해당 항목의 참조 비트가 1로 변경됩니다.</li>
+                <li>새로운 키를 추가하면 페이지 부재가 발생합니다.</li>
+                <li>캐시가 가득 찬 상태에서 페이지 부재가 발생하면, 시계 바늘이 다음 항목을 확인합니다.</li>
+                <li>참조 비트가 1인 항목은 비트를 0으로 바꾸고 다음 항목으로 넘어갑니다.</li>
+                <li>참조 비트가 0인 항목은 교체 대상이 되어 제거되고, 새로운 항목이 추가됩니다.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const keyInput = document.getElementById('keyInput');
+            const putButton = document.getElementById('putButton');
+            const capacityInput = document.getElementById('capacityInput');
+            const cacheContainer = document.getElementById('cacheContainer');
+            const statusDiv = document.getElementById('status');
+            const clockHand = document.getElementById('clockHand');
+
+            // Clock Cache data structure in JavaScript
+            let cacheList = []; // Array of { key: number, refBit: boolean }
+            let cacheMap = new Map(); // Map to store key -> index
+            let clockHandIndex = 0;
+            let capacity = parseInt(capacityInput.value);
+
+            // Event listener for capacity change
+            capacityInput.addEventListener('change', () => {
+                const newCapacity = parseInt(capacityInput.value);
+                if (newCapacity > 0) {
+                    capacity = newCapacity;
+                    cacheList = [];
+                    cacheMap.clear();
+                    clockHandIndex = 0;
+                    renderCache();
+                    statusDiv.innerHTML = '캐시 용량이 변경되었습니다. 다시 시작하세요.';
+                    statusDiv.className = 'status-message mt-8 text-blue-500';
+                }
+            });
+
+            // Event listener for PUT button click
+            putButton.addEventListener('click', () => {
+                const key = parseInt(keyInput.value.trim());
+                if (isNaN(key)) {
+                    return;
+                }
+                put(key);
+                keyInput.value = "";
+                keyInput.focus();
+            });
+
+            // Event listener for Enter key press
+            keyInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    putButton.click();
+                }
+            });
+
+            // Main put function implementing Clock Cache logic
+            function put(key) {
+                let isHit = false;
+                let message = '';
+                let evictedKey = null;
+
+                // Check for cache hit
+                if (cacheMap.has(key)) {
+                    isHit = true;
+                    message = `캐시 히트: 키 '${key}'`;
+                    cacheList[cacheMap.get(key)].refBit = true;
+                } else {
+                    isHit = false;
+                    message = `페이지 부재: 키 '${key}'`;
+
+                    if (cacheList.length === capacity) {
+                        // Cache is full, perform eviction
+                        while (true) {
+                            // Loop back to the beginning if we reached the end
+                            if (clockHandIndex >= cacheList.length) {
+                                clockHandIndex = 0;
+                            }
+
+                            const currentNode = cacheList[clockHandIndex];
+                            if (currentNode.refBit) {
+                                // Ref bit is 1, change to 0 and move on
+                                currentNode.refBit = false;
+                                clockHandIndex++;
+                            } else {
+                                // Ref bit is 0, this is the one to evict
+                                evictedKey = currentNode.key;
+                                cacheMap.delete(evictedKey);
+                                cacheList.splice(clockHandIndex, 1);
+                                break;
+                            }
+                        }
+                        message += ` (키 '${evictedKey}' 제거됨)`;
+                    }
+
+                    // Add the new item to the end of the list
+                    cacheList.push({ key: key, refBit: true });
+                    cacheMap.set(key, cacheList.length - 1);
+                    // Update map indices after a miss and before adding the new item
+                    updateMapIndices();
+                }
+                
+                updateUI(message, isHit);
+            }
+
+            // Update the map to reflect new indices after a change
+            function updateMapIndices() {
+                 cacheMap.clear();
+                 cacheList.forEach((node, index) => {
+                     cacheMap.set(node.key, index);
+                 });
+            }
+
+            // Update the UI with new messages and cache state
+            function updateUI(message, isHit) {
+                statusDiv.textContent = message;
+                statusDiv.className = `status-message mt-8 ${isHit ? 'status-hit' : 'status-miss'}`;
+                
+                renderCache(isHit);
+            }
+
+            // Render the cache items on the screen
+            function renderCache(isHit) {
+                cacheContainer.innerHTML = '';
+                cacheContainer.appendChild(clockHand);
+                
+                // Get the offset of each item to position the clock hand correctly
+                const itemWidth = 7 * 16; // 7rem in pixels
+                const gapWidth = 1 * 16; // 1rem in pixels
+                const totalItemWidth = itemWidth + gapWidth;
+
+                cacheList.forEach((node, index) => {
+                    const cacheItem = document.createElement('div');
+                    cacheItem.classList.add('cache-item');
+                    cacheItem.innerHTML = `${node.key}<span class="ref-bit">Ref: ${node.refBit ? 1 : 0}</span>`;
+
+                    // Add animation class if this is the last added item
+                    if (!isHit && index === cacheList.length - 1) {
+                        cacheItem.classList.add('added');
+                    }
+                    
+                    cacheContainer.appendChild(cacheItem);
+                });
+                
+                // Position the clock hand based on the current index
+                if (cacheList.length > 0) {
+                    const offsetLeft = cacheContainer.offsetWidth / 2 - (cacheList.length * totalItemWidth) / 2 + clockHandIndex * totalItemWidth;
+                    clockHand.style.left = `${offsetLeft + itemWidth / 2 - 20}px`;
+                    clockHand.style.display = 'block';
+                } else {
+                    clockHand.style.display = 'none';
+                }
+            }
+            
+            // Initial render
+            renderCache();
+        });
+    </script>
+</body>
+</html>
